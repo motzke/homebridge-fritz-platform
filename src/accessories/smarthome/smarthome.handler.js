@@ -476,8 +476,8 @@ class Handler {
 
         try {
           let device = !accessory.context.config.group
-            ? this.smarthomeList.devices.find((device) => device.ain.includes(accessory.context.config.ain))
-            : this.smarthomeList.groups.find((device) => device.name.includes(accessory.displayName));
+            ? this.smarthomeList.devices.findLast((device) => device.ain.includes(accessory.context.config.ain))
+            : this.smarthomeList.groups.findLast((device) => device.name.includes(accessory.displayName));
 
           logger.debug(device, `${accessory.displayName} (${subtype})`);
 
