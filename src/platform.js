@@ -58,6 +58,16 @@ function FritzPlatform(log, config, api) {
 
   CustomTypes.registerWith(api.hap);
   EveTypes.registerWith(api.hap);
+
+  // fakegato-history loads googleapis, whose dependency buffer-equal-constant-time reads
+  // SlowBuffer.prototype at require time. Node.js 26 removed SlowBuffer, which crashes the plugin.
+  const buffer = require('buffer');
+  if (!buffer.SlowBuffer) {
+    buffer.SlowBuffer = function SlowBuffer(size) {
+      return Buffer.allocUnsafeSlow(size);
+    };
+  }
+
   HistoryService = require('fakegato-history')(api);
 
   this.api = api;
